@@ -12,7 +12,7 @@ class Solution
     bool search(vector<vector<int> > matrix, int n, int m, int x) 
     {
         int rStart=0,cEnd=m-1;
-        while(rStart>=0 && rStart<n && cEnd>=0 && cEnd<m){
+        while(rStart<n && cEnd>=0){
             if(matrix[rStart][cEnd]>x){
                 cEnd--;
             }

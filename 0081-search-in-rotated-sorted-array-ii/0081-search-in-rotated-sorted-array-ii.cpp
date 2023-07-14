@@ -12,11 +12,7 @@ public:
             }
             if(nums[m]==target)return true;
             
-            if(nums[m]>=nums[e]){
-                if(nums[m]==nums[e]){
-                    e=m-1;
-                    continue;
-                }
+            if(nums[m]>nums[e]){
                 if(nums[s]<=target && nums[m]>=target){
                     e=m-1;
                 }

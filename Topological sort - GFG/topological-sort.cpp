@@ -3,43 +3,44 @@
 using namespace std;
 
 // } Driver Code Ends
+
 class Solution
 {
-    void dfs(int v, vector<int> graph[], vector<int> &visited, int i, stack<int> &s)
-{
-    visited[i] = 1;
-    for (auto it : graph[i])
-    {
-        if (!visited[it])
-        {
-            dfs(v, graph, visited, it, s);
-            s.push(it);
-        }
-    }
-}
 	public:
 	//Function to return list containing vertices in Topological order. 
-	vector<int> topoSort(int v, vector<int> graph[]) 
+	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
-	   vector<int> visited(v, 0);
-    stack<int> s;
-    for (int i = 0; i < v; i++)
-    {
-        if (!visited[i])
-        {
-            dfs(v, graph, visited, i, s);
-            s.push(i);
-        }
-    }
-    vector<int> soln;
-    while (!s.empty())
-    {
-        soln.push_back(s.top());
-        s.pop();
-    }
-    return soln;
+	   vector<int>inDegree(V,0);
+	   for(int i=0;i<V;i++){
+	       for(auto x:adj[i]){
+	           inDegree[x]++;
+	       }
+	   }
+	   vector<int>soln;
+	   queue<int>q;
+	   for(int i=0;i<V;i++){
+	       if(inDegree[i]==0){
+	           q.push(i);
+	           soln.push_back(i);
+	       }
+	   }
+	   while(!q.empty()){
+	   
+	   int curr=q.front();
+	   q.pop();
+	   for(auto x:adj[curr]){
+	       inDegree[x]--;
+	       if(inDegree[x]==0){
+	           q.push(x);
+	           soln.push_back(x);
+	       }
+	   }
+	       
+	   }
+	   return soln;
 	}
 };
+
 
 //{ Driver Code Starts.
 

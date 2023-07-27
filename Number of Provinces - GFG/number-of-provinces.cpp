@@ -5,41 +5,89 @@ using namespace std;
 
 // } Driver Code Ends
 //User function Template for C++
-
-class Solution {
-    void dfs(vector<vector<int>> &graph, int start_vertex,vector<bool>&visited)
+class DisjointSet
 {
-    int num_vertices = graph.size();
+    vector<int> rank, parent, size;
 
-    stack<int> s;
-    s.push(start_vertex);
-    visited[start_vertex] = true;
-
-    while (!s.empty())
+public:
+    DisjointSet(int n)
     {
-        int current_vertex = s.top();
-        s.pop();
-        for (int i=0;i<graph[0].size();i++)
+        rank.resize(n + 1, 0);
+        parent.resize(n + 1);
+        size.resize(n + 1);
+        for (int i = 0; i <= n; i++)
         {
-            if (!visited[i] && graph[current_vertex][i])
-            {
-                visited[i] = true;
-                s.push(i);
-            }
+            parent[i] = i;
+            size[i] = 1;
         }
     }
-}
+
+    int findUPar(int node)
+    {
+        if (node == parent[node])
+            return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionByRank(int u, int v)
+    {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v)
+            return;
+        if (rank[ulp_u] < rank[ulp_v])
+        {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_v] < rank[ulp_u])
+        {
+            parent[ulp_v] = ulp_u;
+        }
+        else
+        {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+
+    void unionBySize(int u, int v)
+    {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v)
+            return;
+        if (size[ulp_u] < size[ulp_v])
+        {
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else
+        {
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+
+
+class Solution {
+    
   public:
     int numProvinces(vector<vector<int>> adj, int V) {
-        vector<bool> visited(V, false); // Mark all vertices as unvisited
-        int cnt=0;
+        DisjointSet ds(V);
         for(int i=0;i<V;i++){
-            if(!visited[i]){
-                cnt++;
-                dfs(adj,i,visited);
+            for(int j=0;j<adj[0].size();j++){
+                if(adj[i][j]==1){
+                    ds.unionBySize(i,j);
+                }
             }
         }
+        int cnt=0;
+        for(int i=0;i<V;i++){
+            if(ds.findUPar(i)==i)cnt++;
+        }
         return cnt;
+        
     }
 };
 

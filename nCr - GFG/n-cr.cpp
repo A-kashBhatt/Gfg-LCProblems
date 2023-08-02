@@ -26,7 +26,7 @@ class Solution{
     ll factorial(ll a){
         ll soln=1;
         for(int i=2;i<=a;i++){
-          soln=(soln%mod*i)%mod;
+          soln=(soln*i)%mod;
         } 
         return soln;
     }
@@ -38,8 +38,8 @@ public:
         ll c=factorial(n-r);
         
          b= (b*c)%mod;
-        ll bin= (findPower(b,mod-2))%mod;
-        ll soln= ((a%mod) * (bin%mod))%mod;
+        ll bin= findPower(b,mod-2);
+        ll soln= (a*bin)%mod;
         return soln;
         
     }

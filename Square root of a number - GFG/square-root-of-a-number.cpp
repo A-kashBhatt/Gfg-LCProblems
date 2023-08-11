@@ -9,7 +9,7 @@ using namespace std;
 // x: element to find square root
 class Solution{
     bool isValid(long long int x,int mid){
-        if((long long)mid*mid<=x)return true;
+        if((long long)mid*mid>=x)return true;
         return false;
     }
   public:
@@ -20,11 +20,11 @@ class Solution{
             int mid=low+(high-low)/2;
             if(isValid(x,mid)){
                 ans=mid;
-                low=mid+1;
+                high=mid-1;
             }
-            else high=mid-1;
+            else low=mid+1;
         }
-        return ans;
+        return ans*ans>x?ans-1:ans;
     }
 };
 

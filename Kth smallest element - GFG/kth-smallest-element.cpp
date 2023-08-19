@@ -7,6 +7,29 @@ using namespace std;
 // } Driver Code Ends
 //User function template for C++
 
+int partition (int arr[], int low, int high)
+    {
+    int pivot = arr[high];
+    int j = low - 1;
+    for (int i = low; i < high; i++)
+    {
+        if (arr[i] <= pivot)
+        {
+            j++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[j + 1], arr[high]);
+    return j + 1;
+}
+
+int quickSelect(int arr[],int low,int high,int k){
+    int pivot=partition(arr,low,high);
+    if(pivot==k-1)return arr[pivot];
+    else if(pivot>k-1) {return quickSelect(arr,low,pivot-1,k);}
+    else  { return quickSelect(arr,pivot+1,high,k);}
+}
+
 class Solution{
     public:
     // arr : given array
@@ -14,16 +37,10 @@ class Solution{
     // r : ending index of the array i.e size-1
     // k : find kth smallest element and return using this function
     int kthSmallest(int arr[], int l, int r, int k) {
-       priority_queue<int>pq;
-       for(int i=l;i<=r;i++){
-           pq.emplace(arr[i]);
-           if(pq.size()>k){
-               pq.pop();
-           }
-       }
-       return pq.top();
+        int index=quickSelect(arr,l,r,k);
     }
 };
+
 
 //{ Driver Code Starts.
  

@@ -11,20 +11,13 @@ class Solution{
 public:
     int longestSubsequence(int N, int A[])
     {
-        // code here
-        vector<int>dp(N,1);
-        int maxi=1;
-        for(int i=1;i<N;i++){
-            for(int j=0;j<i;j++){
-                if(abs(A[j]-A[i])==1){
-                    if(dp[j]+1>=dp[i]){
-                        dp[i]=dp[j]+1;
-                        maxi=max(maxi,dp[i]);
-                    }
-                }
-            }
-        }
-        return maxi;
+       vector<int>dp(N,1);
+       for(int i=0;i<N;i++){
+           for(int j=i+1;j<N;j++){
+               if(abs(A[i]-A[j])==1)dp[j]=max(dp[j],dp[i]+1);
+           }
+       }
+       return *max_element(dp.begin(),dp.end());
     }
 };
 

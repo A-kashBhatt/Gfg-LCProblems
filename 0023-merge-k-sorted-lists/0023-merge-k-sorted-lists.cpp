@@ -47,15 +47,17 @@ class Solution {
         }
         return head;
     }
+    ListNode*helper(vector<ListNode*>& lists,int low,int high){
+        if(low==high)return lists[low];
+        int mid=low+(high-low)/2;
+        ListNode*first=helper(lists,low,mid);
+        ListNode*second=helper(lists,mid+1,high);
+        return mergeTwoLists(first,second);
+    }
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         int sz=lists.size();
         if(sz==0)return NULL;
-        if(sz==1)return lists[0];
-        ListNode*head=mergeTwoLists(lists[0],lists[1]);
-        for(int i=2;i<sz;i++){
-            head=mergeTwoLists(head,lists[i]);
-        }
-        return head;
+        return helper(lists,0,sz-1);
     }
 };

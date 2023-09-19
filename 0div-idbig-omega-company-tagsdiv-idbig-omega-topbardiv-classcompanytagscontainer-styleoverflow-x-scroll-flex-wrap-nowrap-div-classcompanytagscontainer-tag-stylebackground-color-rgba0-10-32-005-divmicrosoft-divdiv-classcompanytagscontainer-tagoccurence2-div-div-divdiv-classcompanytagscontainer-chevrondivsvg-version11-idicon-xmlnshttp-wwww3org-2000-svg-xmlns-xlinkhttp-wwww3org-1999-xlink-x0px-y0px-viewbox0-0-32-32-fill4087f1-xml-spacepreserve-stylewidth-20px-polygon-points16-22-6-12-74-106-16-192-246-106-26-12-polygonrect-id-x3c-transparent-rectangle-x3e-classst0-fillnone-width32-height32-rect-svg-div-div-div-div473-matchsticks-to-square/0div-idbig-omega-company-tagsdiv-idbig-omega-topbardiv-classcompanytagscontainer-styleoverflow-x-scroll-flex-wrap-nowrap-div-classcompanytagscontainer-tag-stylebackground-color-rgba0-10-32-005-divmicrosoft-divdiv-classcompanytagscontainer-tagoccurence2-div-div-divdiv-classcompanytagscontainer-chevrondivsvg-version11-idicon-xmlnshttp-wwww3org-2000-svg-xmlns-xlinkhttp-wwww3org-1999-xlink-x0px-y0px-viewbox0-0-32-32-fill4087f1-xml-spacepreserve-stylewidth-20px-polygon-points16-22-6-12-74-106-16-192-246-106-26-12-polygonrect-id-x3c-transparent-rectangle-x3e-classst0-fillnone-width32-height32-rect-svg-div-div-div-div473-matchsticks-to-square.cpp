@@ -6,12 +6,12 @@ class Solution {
         for(auto it:sides)if(it>target)return false;
         if(i<0)return false;
         for(int j=0;j<4;j++){
-            int k=j-1;
-            while(k>=0){
-                if(sides[k]==sides[j])break;
-                k--;
-            }
-            if(k!=-1)continue;
+            // int k=j-1;
+            // while(k>=0){
+            //     if(sides[k]==sides[j])break;
+            //     k--;
+            // }
+            // if(k!=-1)continue;
             sides[j]+=matchsticks[i];
             if(helper(matchsticks,sides,i-1,target))return true;
             sides[j]-=matchsticks[i];

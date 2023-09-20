@@ -1,25 +1,22 @@
 //memoization solution
 class Solution {
-    int helper(int amount,vector<int>&coins,int start,vector<vector<int>>&dp){
-        if(amount==0)return 1;
-        if(amount<0||start>=coins.size())return 0;
-        if(dp[amount][start]!=-1)return dp[amount][start];
-        int ans=0;
-        // for(int i=start;i<coins.size();i++){
-        //     if(coins[i]>amount)return 0;
-        //     ans+=helper(amount-coins[i],coins,i,dp);
-        // }
-        ans+=helper(amount-coins[start],coins,start,dp);
-        ans+=helper(amount,coins,start+1,dp);
-        
-        return dp[amount][start]=ans;
-    }
+ 
 public:
-    int change(int amount, vector<int>& coins) {
-        int sz=coins.size();
+    int change(int value, vector<int>& coins) {
+        
+        int n=coins.size();
         sort(coins.begin(),coins.end());
-        vector<vector<int>>dp(amount+1,vector<int>(sz,-1));
-        return helper(amount,coins,0,dp);
+        vector<long>prev(value+1,0);
+        prev[0]=1;
+        for(int i=1;i<=value;i++)if(i%coins[0]==0)prev[i]=1;
+     for(int i=1;i<n;i++){
+        for(int j=1;j<=value;j++){
+          long take=0;
+          if(j>=coins[i])take=prev[j-coins[i]];
+          prev[j]+=take;
+        }
+    }
+    return prev[value];
         
     }
 };

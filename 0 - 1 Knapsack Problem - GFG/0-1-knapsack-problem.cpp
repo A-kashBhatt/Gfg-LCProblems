@@ -6,21 +6,25 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 {
-    int helper(int W, int wt[], int val[], int ind,vector<vector<int>>&dp){
-        if(W<=0 || ind<0)return 0;
-        //take
-        if(dp[ind][W]!=-1)return dp[ind][W];
-        int take=INT_MIN;
-        if(wt[ind]<=W)take=val[ind]+helper(W-wt[ind],wt,val,ind-1,dp);
-        int notTake=helper(W,wt,val,ind-1,dp);
-        return dp[ind][W]=max(take,notTake);
-    }
+    
     public:
     //Function to return max value that can be put in knapsack of capacity W.
     int knapSack(int W, int wt[], int val[], int n) 
     { 
-      vector<vector<int>>dp(n,vector<int>(W+1,-1));
-      return helper(W,wt,val,n-1,dp);
+      vector<vector<int>>dp(n,vector<int>(W+1,0));
+      for(int i=0;i<n;i++)dp[i][0]=0;
+      if(wt[0]<=W){
+          for(int i=wt[0];i<=W;i++)dp[0][i]=val[0];
+      }
+      for(int ind=1;ind<n;ind++){
+          for(int weigh=1;weigh<=W;weigh++){
+              int take=INT_MIN;
+              if(weigh>=wt[ind])take=val[ind]+dp[ind-1][weigh-wt[ind]];
+              int notTake=dp[ind-1][weigh];
+              dp[ind][weigh]=max(take,notTake);
+          }
+      }
+      return dp[n-1][W];
     }
 };
 

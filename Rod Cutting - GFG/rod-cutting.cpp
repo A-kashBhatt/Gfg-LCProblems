@@ -9,20 +9,24 @@ using namespace std;
 // User function Template for C++
 
 class Solution{
-    int helper(int price[],int ind,int l,vector<vector<int>>&dp){
-        if(l==0 || ind==-1)return 0;
-        if(dp[ind][l]!=-1)return dp[ind][l];
-        int cut=INT_MIN;
-        if(l>=ind+1)cut=price[ind]+helper(price,ind,l-(ind+1),dp);
-        int notCut=helper(price,ind-1,l,dp);
-        return dp[ind][l]=max(cut,notCut);
-    }
+    
   public:
     int cutRod(int price[], int n) {
-        vector<vector<int>>dp(n,vector<int>(n+1,-1));
-        return helper(price,n-1,n,dp);
+        vector<vector<int>>dp(n,vector<int>(n+1,0));
+        // for(int i=0;i<n;i++)dp[i][0]=0;
+        for(int i=1;i<=n;i++)dp[0][i]=price[0]*i;
+        for(int ind=1;ind<n;ind++){
+            for(int l=1;l<=n;l++){
+                int cut=INT_MIN;
+                if(l>=ind+1)cut=price[ind]+dp[ind][l-(ind+1)];
+                int notCut=dp[ind-1][l];
+                dp[ind][l]=max(cut,notCut); 
+            }
+        }
+        return dp[n-1][n];
     }
 };
+
 
 //{ Driver Code Starts.
 

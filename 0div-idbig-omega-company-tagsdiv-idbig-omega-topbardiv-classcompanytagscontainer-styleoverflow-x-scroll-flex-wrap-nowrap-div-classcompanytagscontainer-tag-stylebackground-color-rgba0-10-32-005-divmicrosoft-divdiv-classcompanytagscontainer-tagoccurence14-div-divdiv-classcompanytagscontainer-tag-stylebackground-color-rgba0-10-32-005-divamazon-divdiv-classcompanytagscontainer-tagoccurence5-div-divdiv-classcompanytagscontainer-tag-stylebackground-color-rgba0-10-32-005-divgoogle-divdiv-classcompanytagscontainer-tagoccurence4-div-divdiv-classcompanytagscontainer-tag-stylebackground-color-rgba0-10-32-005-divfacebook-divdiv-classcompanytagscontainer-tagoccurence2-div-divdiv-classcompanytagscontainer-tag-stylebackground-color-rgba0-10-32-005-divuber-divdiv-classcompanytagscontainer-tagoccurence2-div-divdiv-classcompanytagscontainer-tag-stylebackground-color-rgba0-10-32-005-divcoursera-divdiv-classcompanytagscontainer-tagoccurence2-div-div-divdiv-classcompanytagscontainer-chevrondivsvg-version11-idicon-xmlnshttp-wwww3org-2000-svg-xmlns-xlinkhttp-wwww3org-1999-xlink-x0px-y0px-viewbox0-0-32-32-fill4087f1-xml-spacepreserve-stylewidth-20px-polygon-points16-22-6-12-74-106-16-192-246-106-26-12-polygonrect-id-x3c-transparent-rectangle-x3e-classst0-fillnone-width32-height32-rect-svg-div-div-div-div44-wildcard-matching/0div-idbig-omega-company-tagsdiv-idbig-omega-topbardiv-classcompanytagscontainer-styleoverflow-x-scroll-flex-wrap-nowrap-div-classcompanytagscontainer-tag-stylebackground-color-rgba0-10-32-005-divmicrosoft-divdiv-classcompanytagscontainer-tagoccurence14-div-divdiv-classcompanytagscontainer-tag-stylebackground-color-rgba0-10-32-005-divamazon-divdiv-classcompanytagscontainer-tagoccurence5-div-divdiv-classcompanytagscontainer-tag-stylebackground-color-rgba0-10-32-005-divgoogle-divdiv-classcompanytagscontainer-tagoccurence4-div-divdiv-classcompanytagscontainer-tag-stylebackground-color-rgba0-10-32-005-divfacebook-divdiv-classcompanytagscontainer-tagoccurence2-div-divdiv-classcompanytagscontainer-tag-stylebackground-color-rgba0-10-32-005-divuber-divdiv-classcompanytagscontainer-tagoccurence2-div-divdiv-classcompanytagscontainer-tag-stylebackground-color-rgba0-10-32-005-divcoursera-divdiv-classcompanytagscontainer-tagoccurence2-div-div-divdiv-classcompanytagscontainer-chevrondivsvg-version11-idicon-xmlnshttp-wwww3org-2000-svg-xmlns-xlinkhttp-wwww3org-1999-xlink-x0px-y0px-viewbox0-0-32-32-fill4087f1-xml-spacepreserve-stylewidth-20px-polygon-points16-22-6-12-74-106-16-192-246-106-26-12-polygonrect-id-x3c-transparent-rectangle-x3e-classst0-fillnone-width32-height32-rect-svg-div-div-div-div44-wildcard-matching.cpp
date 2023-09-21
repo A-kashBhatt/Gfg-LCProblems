@@ -1,29 +1,26 @@
 class Solution {
-    bool helper(string &s,string &p,int i,int j,vector<vector<int>>&dp){
-        if(i<0 && j<0)return true;
-        if(j<0)return false;
-        if(i<0){
-         int temp=j;
-            while(temp>=0){
-                if(p[temp]!='*')return false;
-                temp--;
-            }
-            return true;
-        }
-        if(dp[i][j]!=-1)return dp[i][j];
-        if((s[i]==p[j]) || p[j]=='?')return dp[i][j]=helper(s,p,i-1,j-1,dp);
-        else if(p[j]=='*'){
-            bool take=helper(s,p,i-1,j,dp);
-            bool notTake=helper(s,p,i,j-1,dp);
-            return dp[i][j]=(take||notTake);
-        }
-        
-        return dp[i][j]=false;
-    }
+
 public:
     bool isMatch(string s, string p) {
         int sz1=s.size(),sz2=p.size();
-        vector<vector<int>>dp(sz1,vector<int>(sz2,-1));
-        return helper(s,p,sz1-1,sz2-1,dp);
+        vector<vector<bool>>dp(sz1+1,vector<bool>(sz2+1,false));
+        dp[0][0]=true;
+        for(int i=1;i<=sz1;i++)dp[i][0]=false;
+        bool extraChar=false;
+        for(int j=1;j<=sz2;j++){
+            if(p[j-1]!='*')extraChar=true;
+            if(extraChar)break;
+            dp[0][j]=true;
+        }
+        for(int i=1;i<=sz1;i++){
+            for(int j=1;j<=sz2;j++){
+                if((s[i-1]==p[j-1])||p[j-1]=='?')dp[i][j]=dp[i-1][j-1];
+                else if(p[j-1]=='*'){
+                    dp[i][j]=(dp[i-1][j] | dp[i][j-1]);
+                }
+                else dp[i][j]=false;
+            }
+        }
+        return dp[sz1][sz2];
     }
 };

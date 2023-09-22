@@ -1,24 +1,25 @@
-//tabulation
+//tabulation with further space optimized
 class Solution {
     
 public:
     int maxProfit(vector<int>& prices) {
         int sz=prices.size();
-        vector<vector<vector<int>>>dp(sz+1,vector<vector<int>>(2,vector<int>(3,0)));
+        vector<vector<int>>curr(2,vector<int>(3,0)),ahead(2,vector<int>(3,0));
         for(int ind=sz-1;ind>=0;ind--){
             for(int buy=1;buy>=0;buy--){
                 for(int trades=2;trades>0;trades--){
                     if(buy){
-                       dp[ind][buy][trades]=max(-prices[ind]+ dp[ind+1][0][trades], dp[ind+1][1][trades]);
+                       curr[buy][trades]=max(-prices[ind]+ ahead[0][trades], ahead[1][trades]);
             }
                     
                     else{
-                        dp[ind][buy][trades]= max(prices[ind]+ dp[ind+1][1][trades-1], dp[ind+1][0][trades]);
+                        curr[buy][trades]= max(prices[ind]+ ahead[1][trades-1], ahead[0][trades]);
             }
                     }
                 }
+                ahead=curr;
             }
         
-        return dp[0][1][2];
+        return ahead[1][2];
     }
 };

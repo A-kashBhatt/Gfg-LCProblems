@@ -11,12 +11,12 @@ class Solution {
   public:
     int getMinDiff(int arr[], int n, int k) {
         sort(arr,arr+n);
-        int ans=arr[n-1]-arr[0];
+        int ans=(*max_element(arr,arr+n)-*min_element(arr,arr+n));
         for(int i=0;i<n-1;i++){
-            int mx=max(arr[i]+k,arr[n-1]-k);
-            int mn=min(arr[0]+k,arr[i+1]-k);
-            if(mn<0)continue;
-            ans=min(mx-mn,ans);
+            int tempMax=max(arr[i]+k,arr[n-1]-k);
+            int tempMin=min(arr[0]+k,arr[i+1]-k);
+            if(tempMin<0)continue;
+            ans=min(ans,tempMax-tempMin);
         }
         return ans;
     }

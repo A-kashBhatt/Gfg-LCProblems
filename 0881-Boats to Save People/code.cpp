@@ -1,20 +1,32 @@
+// using count of each and every weight ,kinda count sort algo
 class Solution
 {
 public:
     int numRescueBoats(vector<int> &people, int limit)
     {
-        sort(people.begin(), people.end());
-        int i = 0, sz = people.size(), j = sz - 1;
-        int bt = 0;
-        while (j >= i)
+        vector<int> v(limit + 1, 0);
+        int sz = people.size();
+        for (auto it : people)
+            v[it]++;
+
+        int j = 0;
+        for (int i = 0; i < v.size(); i++)
         {
-            if (people[i] + people[j] <= limit)
+            while (v[i])
             {
-                i++;
+                people[j++] = i;
+                v[i]--;
             }
-            j--;
-            bt++;
         }
-        return bt;
+        int boats = 0;
+        int left = 0, right = sz - 1;
+        while (right >= left)
+        {
+            if (people[left] + people[right] <= limit)
+                left++;
+            right--;
+            boats++;
+        }
+        return boats;
     }
 };
